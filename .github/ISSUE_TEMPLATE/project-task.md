@@ -1,7 +1,7 @@
 ---
 name: Project Task
 about: Temlpate for all our group project work
-title: "[Project #1]: [Task]"
+title: "[P#]: [Task]"
 labels: ''
 assignees: ''
 
