@@ -1,0 +1,12 @@
+<!doctype html>
+{% block header %}
+  <h1>{% block title %}Q & A Chatbot{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% if question %}
+    <h1>You asked: {{ question }}!</h1>
+  {% else %}
+    <h1>You didn't ask anything!</h1>
+  {% endif %}
+{% endblock %}
