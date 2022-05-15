@@ -5,9 +5,11 @@
 ### Run with Docker
 
 #### Pre-reqs
+
 You must have Docker installed before you proceed
 
 #### Steps
+
 From the root of the repo:
 
 ```bash

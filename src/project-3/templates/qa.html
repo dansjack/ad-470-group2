@@ -1,0 +1,13 @@
+<!doctype html>
+{% block header %}
+  <h1>{% block title %}Q & A Chatbot{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div>
+    {% include 'form.html' %} 
+  </div>
+  <div>
+    {% include 'list.html' %} 
+  </div>
+{% endblock %}

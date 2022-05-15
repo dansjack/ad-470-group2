@@ -7,6 +7,12 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-ENV FLASK_APP=index.py
+ENV FLASK_APP=app.py
+
+WORKDIR /app/db
+
+RUN python3 init_db.py
+
+WORKDIR /app
 
 CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]

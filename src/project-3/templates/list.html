@@ -1,0 +1,10 @@
+<!doctype html>
+{% block content %}
+<h2>Questions</h2>
+{% for q in questions %}
+<div class='post'>
+    <p>{{ q['created'] }}</p>
+    <p>{{ q['question'] }}</p>
+</div>
+{% endfor %}
+{% endblock %}
