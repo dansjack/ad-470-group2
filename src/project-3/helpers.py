@@ -8,10 +8,18 @@ def get_db_connection():
     return conn
 
 
-def add_question(conn, question):
-    conn.execute('INSERT INTO questions (question) VALUES (?)', (question,))
-    conn.commit()
+def add_answer(cur, question_id, answer):
+    cur.execute(
+        '''
+        UPDATE questions SET answer = ? where id = ?
+        ''',
+        (answer, question_id)
+    )
 
 
-def get_questions(conn):
-    return conn.execute('SELECT * FROM questions').fetchall()
+def add_question(cur, question):
+    cur.execute('INSERT INTO questions (question) VALUES (?)', (question,))
+
+
+def get_questions(cur):
+    return cur.execute('SELECT * FROM questions').fetchall()

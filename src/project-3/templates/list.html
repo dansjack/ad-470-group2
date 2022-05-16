@@ -3,8 +3,10 @@
 <h2>Questions</h2>
 {% for q in questions %}
 <div class='post'>
+    <p>{{ q['id'] }}</p>
     <p>{{ q['created'] }}</p>
-    <p>{{ q['question'] }}</p>
+    <p>Q: {{ q['question'] }}</p>
+    <p>A: {{ q['answer'] }}</p>
 </div>
 {% endfor %}
 {% endblock %}

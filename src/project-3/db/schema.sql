@@ -1,15 +1,8 @@
 DROP TABLE IF EXISTS questions;
-DROP TABLE IF EXISTS answers;
 
 CREATE TABLE questions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    question TEXT NOT NULL
-);
-
-CREATE TABLE answers (
-    id INTEGER PRIMARY KEY,
-    answer TEXT NOT NULL,
-    FOREIGN KEY (id)
-    REFERENCES questions (id)
+    question TEXT,
+    answer TEXT
 );
