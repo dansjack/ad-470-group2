@@ -2,6 +2,14 @@
 
 ## Project 3
 
+### Update styles with tailwindcss
+
+If you make any changes to tailwindcss, run the following before running with Docker
+
+```bash
+tailwindcss -i ./static/src/main.css -o ./static/dist/main.css --minify
+```
+
 ### Run with Docker
 
 #### Pre-reqs

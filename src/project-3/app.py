@@ -1,7 +1,14 @@
 from flask import Flask, render_template, request, flash
+from flask_assets import Bundle, Environment
 from helpers import get_db_connection, add_question, get_questions, add_answer
 
 app = Flask(__name__)
+
+assets = Environment(app)
+css = Bundle("src/main.css", output="dist/main.css")
+
+assets.register("css", css)
+css.build()
 
 
 @app.route("/", methods=['GET', 'POST'])

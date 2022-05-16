@@ -1,13 +1,12 @@
-<!doctype html>
-{% block header %}
-  <h1>{% block title %}Q & A Chatbot{% endblock %}</h1>
-{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
+<div class="bg-green-300 px-3 py-1">
   <div>
     {% include 'form.html' %} 
   </div>
   <div>
     {% include 'list.html' %} 
   </div>
+</div>
 {% endblock %}

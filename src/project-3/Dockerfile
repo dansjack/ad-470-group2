@@ -15,4 +15,6 @@ RUN python3 init_db.py
 
 WORKDIR /app
 
+RUN tailwindcss -i ./static/src/main.css -o ./static/dist/main.css --minify
+
 CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
