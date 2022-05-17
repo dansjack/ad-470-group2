@@ -1,12 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="bg-green-300 px-3 py-1">
-  <div>
-    {% include 'form.html' %} 
-  </div>
-  <div>
-    {% include 'list.html' %} 
+<div class="bg-red-400 m-3 h-full rounded-lg">
+  <div class="flex sm:flex-col md:flex-row">
+    <div class="bg-violet-400 p-3 m-3 w-inherit md:w-3/5 rounded-lg">
+      <h2 class="text-xl text-indigo-600 font-semibold text-center">Knowledge Bot</h2>
+      <div>
+        {% include 'list.html' %} 
+      </div>
+      <div class="pt-3">
+        {% include 'form.html' %} 
+      </div>
+    </div>
+    <div class="bg-violet-400 p-3 m-3 w-inherit md:w-2/5 rounded-lg">
+      <h2 class="text-xl text-indigo-600 font-semibold text-center">What's This?</h2>
+      {% include 'info.html' %}
+    </div>
   </div>
 </div>
 {% endblock %}

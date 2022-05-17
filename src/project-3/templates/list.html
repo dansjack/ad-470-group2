@@ -1,12 +1,16 @@
 <!doctype html>
 {% block content %}
-<h2>Questions</h2>
-{% for q in questions %}
-<div class='post'>
-    <p>{{ q['id'] }}</p>
-    <p>{{ q['created'] }}</p>
-    <p>Q: {{ q['question'] }}</p>
-    <p>A: {{ q['answer'] }}</p>
+<div class="bg-gray-50 rounded-lg p-2 mt-2 h-60 md:h-[32rem] overflow-auto">
+    {% for q in questions %}
+    <div class='post flex flex-col'>
+        <div class="bg-rose-400 p-2 rounded-lg max-w-1/2">
+            <p>A: {{ q['answer'] }}</p>
+        </div>
+        <div class="bg-indigo-400 p-2 my-1 rounded-lg max-w-1/2 self-end">
+            <p>{{ q['created'] }}</p>
+            <p>Q: {{ q['question'] }}</p>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
 {% endblock %}

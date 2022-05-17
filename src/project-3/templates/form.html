@@ -1,8 +1,11 @@
 <!doctype html>
 {% block content %}
-  <form method="post">
-    <label for="question">What's your question?</label>
-    <input name="question" id="question" required>
-    <button type="submit">Submit</button>
+  <form method="post" class="bg-violet-400 flex py-4">
+    <input class="flex-grow p-2 rounded-lg text-lg" name="question" id="question" required>
+    <button type="submit">
+      <span 
+        class="fa-solid fa-circle-arrow-right fa-2x ml-2 text-indigo-500 hover:text-indigo-600" 
+      ></span>
+    </button>
   </form>
 {% endblock %}

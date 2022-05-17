@@ -3,7 +3,14 @@ module.exports = {
     './templates/**/*.html',
   ],
   theme: {
-    extend: {},
+    extend: {
+      maxWidth: {
+        '1/2': '50%',
+      },
+      width: {
+        inherit: 'inherit',
+      }
+    },
   },
   plugins: [],
 }
