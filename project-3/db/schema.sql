@@ -1,8 +1,9 @@
-DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS comments;
 
-CREATE TABLE questions (
+CREATE TABLE comments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    question TEXT,
-    answer TEXT
+    parent_id INTEGER REFERENCES comments(id), 
+    content TEXT,
+    type TEXT
 );

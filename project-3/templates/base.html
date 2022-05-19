@@ -9,34 +9,48 @@
       <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
     <script>
-      const Q_ID = 0;
-      const Q_DATE = 1;
-      const Q_TEXT = 2;
-      const Q_ANSWER = 3;
+      const C_ID = 0;
+      const C_DATE = 1;
+      const C_PARENT_ID = 2;
+      const C_CONTENT = 3;
+      const C_TYPE = 4;
       const postMessage = async (e) => {
         try {
           e.preventDefault();
           const qToSubmit = e.target.elements.question.value;
           e.target.reset();
+
           const res = await fetch('/submit-question', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ question: qToSubmit }),
           })
-          const questions = await res.json();
+          const comments = await res.json();
           const chatBox = document.getElementById("chat-box");
-          questions.forEach((q) => {
+          comments.forEach((comment) => {
             const div = document.createElement('div');
-            div.innerHTML = `
-            <div class='post flex flex-col'>
+            let content = '<span></span>';
+
+            if (comment[C_TYPE] === 'bot') {
+              content = `
               <div class="bg-rose-400 p-2 rounded-lg max-w-1/2">
-                <p>A: ${q[Q_ANSWER]}</p>
-              </div>
+                <p>${comment[C_DATE]}</p>
+                <p>A:${ comment[C_CONTENT]}</p>
+              </div>`
+            }
+
+            if (comment[C_TYPE] === 'user') {
+              content = `
               <div class="bg-indigo-400 p-2 my-1 rounded-lg max-w-1/2 self-end">
-                <p>${q[Q_DATE]}</p>
-                <p>Q:${q[Q_TEXT]}</p>
-              </div>
+                <p>${comment[C_DATE]}</p>
+                <p>Q: ${comment[C_CONTENT]}</p>
+              </div>`;
+            }
+            div.innerHTML = `
+            <div class="post flex flex-col">
+              ${content}
             </div>`;
+
             const child = chatBox.appendChild(div);
           })
           chatBox.scrollTop = chatBox.scrollHeight;

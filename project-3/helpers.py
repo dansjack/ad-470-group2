@@ -8,18 +8,19 @@ def get_db_connection():
     return conn
 
 
-def add_answer(cur, question_id, answer):
+def add_answer(cur, content, type, parent_id=None):
     cur.execute(
         '''
-        UPDATE questions SET answer = ? where id = ?
+        INSERT INTO comments (parent_id, content, type) VALUES (?, ?, ?)
         ''',
-        (answer, question_id)
-    )
+        (parent_id, content, type))
 
 
-def add_question(cur, question):
-    cur.execute('INSERT INTO questions (question) VALUES (?)', (question,))
+def add_question(cur, content, type, parent_id=None):
+    cur.execute(
+        'INSERT INTO comments (parent_id, content, type) VALUES (?, ?, ?)',
+        (parent_id, content, type))
 
 
-def get_questions(cur):
-    return cur.execute('SELECT * FROM questions')
+def get_comments(cur):
+    return cur.execute('SELECT * FROM comments')
