@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 node_modules
-src/project-3/db/database.db
+project-3/db/database.db

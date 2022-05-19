@@ -22,4 +22,4 @@ def add_question(cur, question):
 
 
 def get_questions(cur):
-    return cur.execute('SELECT * FROM questions').fetchall()
+    return cur.execute('SELECT * FROM questions')

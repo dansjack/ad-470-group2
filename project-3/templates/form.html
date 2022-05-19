@@ -1,7 +1,7 @@
 <!doctype html>
 {% block content %}
-  <form method="post" class="bg-violet-400 flex py-4">
-    <input class="flex-grow p-2 rounded-lg text-lg" name="question" id="question" required>
+  <form class="bg-violet-400 flex py-4" onsubmit="postMessage(event)">
+    <input class="flex-grow p-2 rounded-lg text-lg" type="text" name="question" id="question" type="submit" required>
     <button type="submit">
       <span 
         class="fa-solid fa-circle-arrow-right fa-2x ml-2 text-indigo-500 hover:text-indigo-600" 

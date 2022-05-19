@@ -8,7 +8,43 @@
     {% assets 'css' %}
       <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
-
+    <script>
+      const Q_ID = 0;
+      const Q_DATE = 1;
+      const Q_TEXT = 2;
+      const Q_ANSWER = 3;
+      const postMessage = async (e) => {
+        try {
+          e.preventDefault();
+          const qToSubmit = e.target.elements.question.value;
+          e.target.reset();
+          const res = await fetch('/submit-question', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: qToSubmit }),
+          })
+          const questions = await res.json();
+          const chatBox = document.getElementById("chat-box");
+          questions.forEach((q) => {
+            const div = document.createElement('div');
+            div.innerHTML = `
+            <div class='post flex flex-col'>
+              <div class="bg-rose-400 p-2 rounded-lg max-w-1/2">
+                <p>A: ${q[Q_ANSWER]}</p>
+              </div>
+              <div class="bg-indigo-400 p-2 my-1 rounded-lg max-w-1/2 self-end">
+                <p>${q[Q_DATE]}</p>
+                <p>Q:${q[Q_TEXT]}</p>
+              </div>
+            </div>`;
+            const child = chatBox.appendChild(div);
+          })
+          chatBox.scrollTop = chatBox.scrollHeight;
+        } catch (err) {
+          console.log('err', err);
+        }
+      }
+    </script>
     <title>HotPot Q and A</title>
   </head>
   <body class="bg-red-300 h-screen flex flex-col">
