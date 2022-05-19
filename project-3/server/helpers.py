@@ -24,3 +24,7 @@ def add_question(cur, content, type, parent_id=None):
 
 def get_comments(cur):
     return cur.execute('SELECT * FROM comments')
+
+
+def get_comment(cur, comment_id):
+    return cur.execute('''SELECT * FROM comments WHERE id=?''', (comment_id,))

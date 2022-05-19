@@ -1,7 +1,7 @@
 import json
 from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
-from helpers import get_db_connection, add_question, get_comments, add_answer
+from helpers import get_db_connection, add_question, get_comments, get_comment, add_answer
 
 app = Flask(__name__)
 
@@ -35,6 +35,9 @@ def submit_question():
 
     # TODO: find answer from pickled model and update question record
     q_id = cur.lastrowid
+    print('q_id', q_id)
+    # q = get_comment(cur, q_id)
+    # print(json.dumps([tuple(row) for row in q]))
     add_answer(cur, 'SOME ANSWER', 'bot', q_id)
 
     # commit changes
