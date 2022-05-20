@@ -46,6 +46,7 @@ def submit_question():
 
 @app.route('/generate-answer', methods=['POST'])
 def generate_answer():
+    # TODO: get data from model
     conn = get_db_connection()
     cur = conn.cursor()
 

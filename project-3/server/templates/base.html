@@ -28,24 +28,29 @@
           })
 
           const comment = await qRes.json();
-          console.log('comment', comment);
           updateChatWindow([comment])
+
+          setTimeout(() => {
+            addLoadingEllipsis()
+          }, 500);
 
           const aRes = await fetch('/generate-answer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ question_id: comment[C_ID] }),
           })
-
+      
           const answer = await aRes.json();
-          console.log('answer', answer);
-          updateChatWindow([answer])
+          setTimeout(() => {
+            updateChatWindow([answer])
+          }, 3000);
         } catch (err) {
           console.log('err', err);
         }
       }
 
       function updateChatWindow(comments) {
+        removeLoadingEllipsis();
         const chatBox = document.getElementById("chat-box");
           comments.forEach((comment) => {
             const div = document.createElement('div');
@@ -69,9 +74,31 @@
               ${content}
             </div>`;
 
-            const child = chatBox.appendChild(div);
+            chatBox.appendChild(div);
           })
           chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function addLoadingEllipsis() {
+        const chatBox = document.getElementById("chat-box");
+        const div = document.createElement('div');
+        div.setAttribute('id', 'ellipsis')
+        div.innerHTML = `
+          <div class="bg-rose-400 p-2 mt-6 rounded-lg max-w-fit flex">
+            <span class="bg-slate-500 w-6 h-6 mr-1 rounded-full"></span>
+            <span class="bg-slate-600 w-6 h-6 mr-1 rounded-full"></span>
+            <span class="bg-slate-700 w-6 h-6 mr-1 rounded-full"></span>
+          </div>
+        `
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function removeLoadingEllipsis() {
+        const ellipsis = document.getElementById('ellipsis')
+        if (ellipsis) {
+          ellipsis.remove();
+        }
       }
     </script>
     <title>HotPot Q and A</title>
