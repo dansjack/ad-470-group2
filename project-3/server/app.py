@@ -1,7 +1,7 @@
 import json
 from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
-from helpers import get_db_connection, add_question, get_comments, get_comment, add_answer
+from helpers import get_db_connection, add_question, get_comments, add_answer, get_comment
 
 app = Flask(__name__)
 
@@ -30,22 +30,36 @@ def submit_question():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # insert new question into db
+    # add question to db
     add_question(cur, q, 'user')
 
-    # TODO: find answer from pickled model and update question record
+    # TODO: find answer from pickled model and add new comment
     q_id = cur.lastrowid
-    print('q_id', q_id)
-    # q = get_comment(cur, q_id)
-    # print(json.dumps([tuple(row) for row in q]))
+    get_comment(cur, q_id)
+    single_data = cur.fetchone()
+
+    conn.commit()
+    conn.close()
+
+    return json.dumps(tuple(single_data))
+
+
+@app.route('/generate-answer', methods=['POST'])
+def generate_answer():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    data = request.get_json()
+    q_id = data['question_id']
+
+    # add answer to db
     add_answer(cur, 'SOME ANSWER', 'bot', q_id)
 
-    # commit changes
-    conn.commit()
+    a_id = cur.lastrowid
+    get_comment(cur, a_id)
+    answer = cur.fetchone()
 
-    # refresh list of questions
-    get_comments(cur)
-    data = cur.fetchall()
-    print('sending data back to template')
+    conn.commit()
     conn.close()
-    return json.dumps([tuple(row) for row in data])
+
+    return json.dumps(tuple(answer))

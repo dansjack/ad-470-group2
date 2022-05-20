@@ -27,4 +27,4 @@ def get_comments(cur):
 
 
 def get_comment(cur, comment_id):
-    return cur.execute('''SELECT * FROM comments WHERE id=?''', (comment_id,))
+    return cur.execute('''SELECT * FROM comments WHERE id= ?''', (comment_id,))

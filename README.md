@@ -21,7 +21,7 @@ You must have Docker installed before you proceed
 From the root of the repo:
 
 ```bash
-cd src/project-3
+cd project-3/server
 ```
 
 ```bash
