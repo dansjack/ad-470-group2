@@ -37,13 +37,14 @@
           const aRes = await fetch('/generate-answer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question_id: comment[C_ID] }),
+            body: JSON.stringify({ 
+              question_id: comment[C_ID], question_text: qToSubmit 
+            }),
           })
       
           const answer = await aRes.json();
-          setTimeout(() => {
-            updateChatWindow([answer])
-          }, 3000);
+          console.log('answer', answer);
+          updateChatWindow([answer])
         } catch (err) {
           console.log('err', err);
         }
@@ -59,14 +60,12 @@
             if (comment[C_TYPE] === 'bot') {
               content = `
               <div class="bg-rose-400 p-2 rounded-lg max-w-1/2">
-                <p>${comment[C_DATE]}</p>
-                <p>A:${ comment[C_CONTENT]}</p>
+                <p>${ comment[C_CONTENT]}</p>
               </div>`
             } else if (comment[C_TYPE] === 'user') {
               content = `
               <div class="bg-indigo-400 p-2 my-1 rounded-lg max-w-1/2 self-end">
-                <p>${comment[C_DATE]}</p>
-                <p>Q: ${comment[C_CONTENT]}</p>
+                <p>${comment[C_CONTENT]}</p>
               </div>`;
             }
             div.innerHTML = `
@@ -101,7 +100,7 @@
         }
       }
     </script>
-    <title>HotPot Q and A</title>
+    <title>Wiki Chat</title>
   </head>
   <body class="bg-red-300 h-screen flex flex-col">
     {% block content %}
