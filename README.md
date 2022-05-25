@@ -52,3 +52,5 @@ gcloud builds submit --tag gcr.io/ad470-p3/server
 ```bash
 gcloud run deploy --image gcr.io/ad470-p3/server
 ```
+
+Once deployed, you can view logs for the server on [Google Cloud Platform](https://console.cloud.google.com/run/detail/us-central1/server/logs?project=ad470-p3)
