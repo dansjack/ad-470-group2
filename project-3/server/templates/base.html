@@ -15,13 +15,17 @@
       const C_CONTENT = 3;
       const C_TYPE = 4;
 
+      const PHANTOM_CONTENTSCRIPT = 'phantom-contentscript';
+
       async function postMessage(e) {
-        console.log('e', e);
         try {
+          if (e.target === PHANTOM_CONTENTSCRIPT) {
+            return;
+          }
           e.preventDefault();
           const qToSubmit = e.target.elements.question.value;
           e.target.reset();
-          console.log('qToSubmit', qToSubmit);
+          console.log('question:', qToSubmit);
 
           updateChatWindow([[9999, 'date', 10000, qToSubmit, 'user']])
 
@@ -35,7 +39,7 @@
           })
 
           const comment = await qRes.json();
-          console.log('qRes - comment', comment);
+          console.log('question row from DB:', comment);
 
           const aRes = await fetch('/generate-answer', {
             method: 'POST',
@@ -49,7 +53,7 @@
           console.log('answer', answer);
           updateChatWindow([answer])
         } catch (err) {
-          console.log('err', err);
+          console.log(err);
         }
       }
 
