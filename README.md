@@ -2,6 +2,17 @@
 
 ## Project 3
 
+Contains a one page web app with a question answering bot. This bot connects with the Wikipedia API and attempts to answer questions posed by the user.
+
+Built with:
+
+* Flask
+* Tailwindcss
+* [HuggingFace](https://huggingface.co/deepset/bert-base-cased-squad2?context=My+name+is+Sarah+and+I+live+in+London&question=Where+do+I+live%3F) BERT model pretrained on the SQuAD2.0 data set
+* SQLite3
+* Docker
+* Google Cloud Run
+
 ### Update styles with tailwindcss
 
 If you make any changes to tailwindcss, run the following before running with Docker

@@ -1,7 +1,8 @@
 import json
 from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
-from helpers import get_db_connection, add_question, get_comments, add_answer, get_comment, get_wiki_answer
+from helpers import get_db_connection, add_question, get_comments, add_answer
+from helpers import get_comment, get_wiki_answer
 from DocumentReader import pretrained_reader, custom_trained_reader
 
 app = Flask(__name__)
@@ -24,8 +25,10 @@ def home():
     conn.close()
 
     if request.method == 'GET':
-        return render_template('qa.html', comments=comments, model_type=model_type)
-    
+        return render_template(
+            'qa.html', comments=comments, model_type=model_type
+            )
+
 
 @app.route('/change-model', methods=['POST'])
 def change_model():
@@ -78,8 +81,8 @@ def generate_answer():
         reader = custom_trained_reader
 
     answer = get_wiki_answer(reader, q_text)
-    print('answer?', answer);
-    
+    print('answer?', answer)
+
     add_answer(cur, answer, 'bot', q_id)
 
     a_id = cur.lastrowid
@@ -89,6 +92,7 @@ def generate_answer():
     conn.commit()
     conn.close()
     return json.dumps(tuple(db_answer))
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0:8080", port=8080)
