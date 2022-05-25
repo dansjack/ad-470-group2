@@ -8,8 +8,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-ENV FLASK_APP=app.py
-
 # so we can see print statements
 ENV PYTHONUNBUFFERED=1 
 
@@ -21,4 +19,4 @@ WORKDIR /app
 
 RUN tailwindcss -i ./static/src/main.css -o ./static/dist/main.css --minify
 
-CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]
+CMD gunicorn --bind :8080 --workers 1 --threads 8 --timeout 0 main:app

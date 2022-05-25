@@ -29,7 +29,26 @@ docker build --tag ad470-g2-p3-test .
 ```
 
 ```bash
-docker run -d -p 5001:5000 ad470-g2-p3-test
+docker run -d -p 8080:8080 ad470-g2-p3-test
 ```
 
-Visit [localhost:5001/form](localhost:5001/form)
+Visit [localhost:8080](localhost:8080)
+
+### Run with Cloud Run
+
+#### Pre-reqs
+
+* The [gcloud cli](https://cloud.google.com/sdk/docs/install).
+* You must have access to our google cloud project, ad470-p3. Submit an issue or email dan.jack@hey.com if you need access.
+
+```bash
+gcloud config set project ad470-p3
+```
+
+```bash
+gcloud builds submit --tag gcr.io/ad470-p3/server
+```
+
+```bash
+gcloud run deploy --image gcr.io/ad470-p3/server
+```

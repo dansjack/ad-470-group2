@@ -96,6 +96,7 @@ def generate_answer():
 
         preTrainedReader.tokenize(q_text, page_text)
         a_text = preTrainedReader.get_answer()
+        # a_text = 'FOO BAR'
         print(f"Answer: {a_text}")
         """
         END BLOCK 
@@ -144,3 +145,6 @@ def generate_answer():
 
 
 
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0:8080", port=8080)

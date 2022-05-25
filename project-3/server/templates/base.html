@@ -16,11 +16,18 @@
       const C_TYPE = 4;
 
       async function postMessage(e) {
+        console.log('e', e);
         try {
           e.preventDefault();
           const qToSubmit = e.target.elements.question.value;
           e.target.reset();
+          console.log('qToSubmit', qToSubmit);
 
+          updateChatWindow([[9999, 'date', 10000, qToSubmit, 'user']])
+
+          setTimeout(() => {
+            addLoadingEllipsis()
+          }, 500);
           const qRes = await fetch('/submit-question', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -28,11 +35,7 @@
           })
 
           const comment = await qRes.json();
-          updateChatWindow([comment])
-
-          setTimeout(() => {
-            addLoadingEllipsis()
-          }, 500);
+          console.log('qRes - comment', comment);
 
           const aRes = await fetch('/generate-answer', {
             method: 'POST',
@@ -51,6 +54,7 @@
       }
 
       function updateChatWindow(comments) {
+        console.log('updateChatWindow', comments);
         removeLoadingEllipsis();
         const chatBox = document.getElementById("chat-box");
           comments.forEach((comment) => {
@@ -102,7 +106,7 @@
     </script>
     <title>Wiki Chat</title>
   </head>
-  <body class="bg-red-300 h-screen flex flex-col">
+  <body class="bg-red-300 h-full flex flex-col">
     {% block content %}
     {% endblock content %}
   </body>
