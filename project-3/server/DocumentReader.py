@@ -8,10 +8,10 @@ This DocumentReader class comes from a blog, Building a QA System with BERT on W
 
 
 class DocumentReader:
-		def __init__(self, pretrained_model_name_or_path='bert-large-uncased'):
+		def __init__(self, pretrained_model_name_or_path='bert-large-uncased', model=None):
 				self.READER_PATH = pretrained_model_name_or_path
 				self.tokenizer = AutoTokenizer.from_pretrained(self.READER_PATH)
-				self.model = AutoModelForQuestionAnswering.from_pretrained(self.READER_PATH)
+				self.model = model or AutoModelForQuestionAnswering.from_pretrained(self.READER_PATH)
 				self.max_len = self.model.config.max_position_embeddings
 				self.chunked = False
 				self.model.eval()
@@ -87,4 +87,9 @@ class DocumentReader:
 		def convert_ids_to_string(self, input_ids):
 			return self.tokenizer.convert_tokens_to_string(self.tokenizer.convert_ids_to_tokens(input_ids))
 
-preTrainedReader = DocumentReader("deepset/bert-base-cased-squad2")
+
+custom_model = "bert-large-uncased"
+pretrained_model = "deepset/bert-base-cased-squad2"
+
+pretrained_reader = DocumentReader(pretrained_model)
+custom_trained_reader = DocumentReader(pretrained_model, custom_model)

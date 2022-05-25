@@ -107,6 +107,20 @@
           ellipsis.remove();
         }
       }
+
+      async function toggleModel(e) {
+        if (e.target?.value === 'on') {
+          const toggleRes = await fetch('/change-model', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+          })
+
+          const model_type = await toggleRes.text();
+          console.log('model_type', model_type);
+          const toggleText = document.getElementById('toggle-text');
+          toggleText.textContent = model_type
+        }
+      }
     </script>
     <title>Wiki QA Bot</title>
   </head>
