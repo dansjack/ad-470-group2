@@ -13,7 +13,7 @@ tailwindcss -i ./static/src/main.css -o ./static/dist/main.css --minify
 ### Run locally
 
 #### Pre-reqs
-Change `main.py` to look like below:
+Change `main.py` to look like below:  
 <img width="600" alt="image" src="https://user-images.githubusercontent.com/30481844/170155980-273a8df2-a09f-4831-ab92-3cb6aa50048a.png">
 
 There's a [known issue](https://github.com/actions/runner/issues/805) with installing tokenizers for Huggingface on M1 macs. I tried different workarounds for a few hours, but couldn't get it running.
