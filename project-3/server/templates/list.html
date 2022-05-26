@@ -4,12 +4,12 @@
     {% for comment in comments %}
     <div class='post flex flex-col'>
         {% if comment['type'] == 'bot' %}
-        <div class="bg-rose-400 p-2 rounded-lg max-w-1/2">
+        <div class="bg-rose-400 p-2 rounded-lg w-fit max-w-1/2">
             <p>{{ comment['content'] }}</p>
         </div>
         {% endif %}
         {% if comment['type'] == 'user' %}
-        <div class="bg-indigo-400 p-2 my-1 rounded-lg max-w-1/2 self-end">
+        <div class="bg-indigo-400 p-2 my-1 rounded-lg w-fit max-w-1/2 self-end">
             <p>{{ comment['content'] }}</p>
         </div>
         {% endif %}
