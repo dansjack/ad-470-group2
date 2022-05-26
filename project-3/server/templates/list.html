@@ -1,6 +1,6 @@
 <!doctype html>
 {% block content %}
-<div id="chat-box" class="bg-gray-50 rounded-lg p-2 mt-2 h-60 md:h-[32rem] overflow-auto">
+<div id="chat-box" class="bg-gray-50 rounded-lg p-2 mt-2 h-60 md:h-[32rem] overflow-auto text-gray-700 font-medium">
     {% for comment in comments %}
     <div class='post flex flex-col'>
         {% if comment['type'] == 'bot' %}
