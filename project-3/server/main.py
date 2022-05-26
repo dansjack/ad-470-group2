@@ -103,7 +103,6 @@ def generate_answer():
         reader = custom_trained_reader
 
     answer = get_wiki_answer(reader, q_text)
-    # answer = 'FOO'
     print('answer?', answer)
 
     add_answer(cur, answer, 'bot', q_id)
