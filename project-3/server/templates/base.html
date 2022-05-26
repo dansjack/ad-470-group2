@@ -16,6 +16,8 @@
       const C_TYPE = 4;
 
       const PHANTOM_CONTENTSCRIPT = 'phantom-contentscript';
+      const MODEL = 'model';
+      const ANSWER = 'answer';
 
       async function postMessage(e) {
         try {
@@ -67,12 +69,12 @@
 
             if (comment[C_TYPE] === 'bot') {
               content = `
-              <div class="bg-rose-400 p-2 rounded-lg max-w-1/2">
+              <div class="bg-rose-400 p-2 rounded-lg w-fit max-w-1/2">
                 <p>${ comment[C_CONTENT]}</p>
               </div>`
             } else if (comment[C_TYPE] === 'user') {
               content = `
-              <div class="bg-indigo-400 p-2 my-1 rounded-lg max-w-1/2 self-end">
+              <div class="bg-indigo-400 p-2 my-1 rounded-lg w-fit max-w-1/2 self-end">
                 <p>${comment[C_CONTENT]}</p>
               </div>`;
             }
@@ -108,17 +110,46 @@
         }
       }
 
-      async function toggleModel(e) {
-        if (e.target?.value === 'on') {
-          const toggleRes = await fetch('/change-model', {
+      async function toggler(type) {
+        const TOGGLE_MAP = {
+          [MODEL]: {
+            ROUTE: '/change-model',
+            EL_ID: 'model-toggle-text',
+            LOG: 'model_type',
+          },
+          [ANSWER]: {
+            ROUTE: '/change-answer-type',
+            EL_ID: 'answer-toggle-text',
+            LOG: 'answer_type',
+          },
+        };
+
+        const {ROUTE, EL_ID, LOG} = TOGGLE_MAP[type];
+      
+        try {
+          const toggleRes = await fetch(ROUTE, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
           })
 
-          const model_type = await toggleRes.text();
-          console.log('model_type', model_type);
-          const toggleText = document.getElementById('toggle-text');
-          toggleText.textContent = model_type
+          const result = await toggleRes.text();
+          console.log(LOG, result);
+          const toggleText = document.getElementById(EL_ID);
+          toggleText.textContent = result
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      async function toggleModel(e) {
+        if (e.target?.value === 'on') {
+          return toggler(MODEL);
+        }
+      }
+
+      async function toggleAnswer(e) {
+        if (e.target?.value === 'on') {
+          return toggler(ANSWER);
         }
       }
     </script>

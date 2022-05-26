@@ -15,12 +15,16 @@ class DocumentReader:
         self, pretrained_model_name_or_path='bert-large-uncased', model=None
     ):
         self.READER_PATH = pretrained_model_name_or_path
+        self.all_answers = False
         self.tokenizer = AutoTokenizer.from_pretrained(self.READER_PATH)
         self.model = model or \
             AutoModelForQuestionAnswering.from_pretrained(self.READER_PATH)
         self.max_len = self.model.config.max_position_embeddings
         self.chunked = False
         self.model.eval()
+
+    def set_all_answers(self, is_all):
+        self.all_answers = is_all
 
     def tokenize(self, question, text):
         self.inputs = self.tokenizer.encode_plus(
@@ -82,8 +86,12 @@ class DocumentReader:
                 ans = self.convert_ids_to_string(
                     chunk['input_ids'][0][answer_start:answer_end])
                 print(ans)
-                if ans != '[CLS]' and not answer:
-                    answer = ans
+                if ans and '[CLS]' not in ans:
+                    if self.all_answers:
+                        answer += ans + ' // '
+                    else:
+                        answer = ans
+                        break
             return answer
         else:
             answer_start_scores, answer_end_scores = self.model(**self.inputs)

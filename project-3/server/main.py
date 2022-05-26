@@ -8,13 +8,16 @@ from DocumentReader import pretrained_reader, custom_trained_reader
 app = Flask(__name__)
 print('app started')
 
+# set up tailwind
 assets = Environment(app)
 css = Bundle("src/main.css", output="dist/main.css")
 
 assets.register("css", css)
 css.build()
 
+# globals for qa bot options
 model_type = 'pretrained'
+answer_type = 'first'
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -26,8 +29,11 @@ def home():
 
     if request.method == 'GET':
         return render_template(
-            'qa.html', comments=comments, model_type=model_type
-            )
+            'qa.html',
+            comments=comments,
+            model_type=model_type,
+            answer_type=answer_type
+        )
 
 
 @app.route('/change-model', methods=['POST'])
@@ -38,8 +44,24 @@ def change_model():
         model_type = 'custom'
     else:
         model_type = 'pretrained'
-    print('new type', model_type)
+    print('new model type', model_type)
     return model_type
+
+
+@app.route('/change-answer-type', methods=['POST'])
+def change_answer_type():
+    global answer_type
+    print('current answer type', answer_type)
+    if answer_type == 'first':
+        answer_type = 'all'
+        pretrained_reader.set_all_answers(True)
+        custom_trained_reader.set_all_answers(True)
+    else:
+        answer_type = 'first'
+        pretrained_reader.set_all_answers(False)
+        custom_trained_reader.set_all_answers(False)
+    print('new answer type', answer_type)
+    return answer_type
 
 
 @app.route('/submit-question', methods=['POST'])
@@ -81,6 +103,7 @@ def generate_answer():
         reader = custom_trained_reader
 
     answer = get_wiki_answer(reader, q_text)
+    # answer = 'FOO'
     print('answer?', answer)
 
     add_answer(cur, answer, 'bot', q_id)

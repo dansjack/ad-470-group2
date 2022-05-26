@@ -1,0 +1,36 @@
+<!doctype html>
+{% block content %}
+<div class="">
+  <h3 class="text-lg text-indigo-600 font-semibold text-center">
+    Options
+  </h3>
+  <div class="flex flex-col">
+    <div class="flex items-center w-full mb-2">
+      <label for="model-toggle" class="flex items-center cursor-pointer">
+        <span class="mr-1 text-gray-700 font-medium">Model type:</span>
+        <div onclick="toggleModel(event)" class="relative">
+          <input type="checkbox" id="model-toggle" class="sr-only">
+          <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
+          <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+        </div>
+        <div id="model-toggle-text" class="ml-3 text-gray-700 font-medium">
+          {{ model_type }}
+        </div>
+      </label>
+    </div>
+    <div class="flex items-center w-full mb-2">
+      <label for="answer-toggle" class="flex items-center cursor-pointer">
+        <span class="mr-1 text-gray-700 font-medium">Answer type:</span>
+        <div onclick="toggleAnswer(event)" class="relative">
+          <input type="checkbox" id="answer-toggle" class="sr-only">
+          <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
+          <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+        </div>
+        <div id="answer-toggle-text" class="ml-3 text-gray-700 font-medium">
+          {{ answer_type }}
+        </div>
+      </label>
+    </div>
+  </div>
+</div>
+{% endblock %}
