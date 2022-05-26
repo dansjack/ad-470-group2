@@ -36,8 +36,7 @@ def get_wiki_answer(reader, question):
 
     if not results:
         # no page could be found in wikipedia
-        return ("I checked wikipedia and couldn't find a good page for your ",
-                "question. Please try another question.")
+        return "I checked wikipedia and couldn't find a good page for your question. Please try another question."
 
     try:
         """
@@ -66,15 +65,11 @@ def get_wiki_answer(reader, question):
         error_string = str(e)
 
         if 'does not match any pages. Try another id!' in error_string:
-            error_string = ("Oops, I had a problem reading the suggested ",
-                            "page for your question. Can you try asking ",
-                            "something else?")
+            error_string = "Oops, I had a problem reading the suggested page for your question. Can you try asking something else?"
 
         # TODO: figure out what this error is
         if 'argument after ** must be a mapping, not Tensor' in error_string:
-            error_string = (
-                "Hmm, Wikipedia gave me some data I didn't know ",
-                "how to handle. Can you try asking something else?"
-                )
+            error_string = "Hmm, Wikipedia gave me some data I didn't know how to handle. Can you try asking something else?"
+                
 
         return error_string
