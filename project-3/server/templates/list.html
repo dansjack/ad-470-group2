@@ -1,0 +1,19 @@
+<!doctype html>
+{% block content %}
+<div id="chat-box" class="bg-gray-50 rounded-lg p-2 mt-2 h-60 md:h-[32rem] overflow-auto text-gray-700 font-medium">
+    {% for comment in comments %}
+    <div class='post flex flex-col'>
+        {% if comment['type'] == 'bot' %}
+        <div class="bg-rose-400 p-2 rounded-lg w-fit max-w-1/2">
+            <p>{{ comment['content'] }}</p>
+        </div>
+        {% endif %}
+        {% if comment['type'] == 'user' %}
+        <div class="bg-indigo-400 p-2 my-1 rounded-lg w-fit max-w-1/2 self-end">
+            <p>{{ comment['content'] }}</p>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

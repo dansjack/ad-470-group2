@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/a3b870fdd8.js" crossorigin="anonymous"></script>
+    {% assets 'css' %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    <script>
+      const C_ID = 0;
+      const C_DATE = 1;
+      const C_PARENT_ID = 2;
+      const C_CONTENT = 3;
+      const C_TYPE = 4;
+
+      const PHANTOM_CONTENTSCRIPT = 'phantom-contentscript';
+      const MODEL = 'model';
+      const ANSWER = 'answer';
+
+      async function postMessage(e) {
+        try {
+          if (e.target === PHANTOM_CONTENTSCRIPT) {
+            return;
+          }
+          e.preventDefault();
+          const qToSubmit = e.target.elements.question.value;
+          e.target.reset();
+          console.log('question:', qToSubmit);
+
+          updateChatWindow([[9999, 'date', 10000, qToSubmit, 'user']])
+
+          setTimeout(() => {
+            addLoadingEllipsis()
+          }, 500);
+          const qRes = await fetch('/submit-question', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: qToSubmit }),
+          })
+
+          const comment = await qRes.json();
+          console.log('question row from DB:', comment);
+
+          const aRes = await fetch('/generate-answer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              question_id: comment[C_ID], question_text: qToSubmit 
+            }),
+          })
+      
+          const answer = await aRes.json();
+          console.log('answer', answer);
+          updateChatWindow([answer])
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      function updateChatWindow(comments) {
+        console.log('updateChatWindow', comments);
+        removeLoadingEllipsis();
+        const chatBox = document.getElementById("chat-box");
+          comments.forEach((comment) => {
+            const div = document.createElement('div');
+            let content = '<span></span>';
+
+            if (comment[C_TYPE] === 'bot') {
+              content = `
+              <div class="bg-rose-400 p-2 rounded-lg w-fit max-w-1/2">
+                <p>${ comment[C_CONTENT]}</p>
+              </div>`
+            } else if (comment[C_TYPE] === 'user') {
+              content = `
+              <div class="bg-indigo-400 p-2 my-1 rounded-lg w-fit max-w-1/2 self-end">
+                <p>${comment[C_CONTENT]}</p>
+              </div>`;
+            }
+            div.innerHTML = `
+            <div class="post flex flex-col">
+              ${content}
+            </div>`;
+
+            chatBox.appendChild(div);
+          })
+          chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function addLoadingEllipsis() {
+        const chatBox = document.getElementById("chat-box");
+        const div = document.createElement('div');
+        div.setAttribute('id', 'ellipsis')
+        div.innerHTML = `
+          <div class="bg-rose-400 p-2 mt-6 rounded-lg max-w-fit flex">
+            <span class="bg-slate-500 w-6 h-6 mr-1 rounded-full"></span>
+            <span class="bg-slate-600 w-6 h-6 mr-1 rounded-full"></span>
+            <span class="bg-slate-700 w-6 h-6 mr-1 rounded-full"></span>
+          </div>
+        `
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function removeLoadingEllipsis() {
+        const ellipsis = document.getElementById('ellipsis')
+        if (ellipsis) {
+          ellipsis.remove();
+        }
+      }
+
+      async function toggler(type) {
+        const TOGGLE_MAP = {
+          [MODEL]: {
+            ROUTE: '/change-model',
+            EL_ID: 'model-toggle-text',
+            LOG: 'model_type',
+          },
+          [ANSWER]: {
+            ROUTE: '/change-answer-type',
+            EL_ID: 'answer-toggle-text',
+            LOG: 'answer_type',
+          },
+        };
+
+        const {ROUTE, EL_ID, LOG} = TOGGLE_MAP[type];
+      
+        try {
+          const toggleRes = await fetch(ROUTE, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+          })
+
+          const result = await toggleRes.text();
+          console.log(LOG, result);
+          const toggleText = document.getElementById(EL_ID);
+          toggleText.textContent = result
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      async function toggleModel(e) {
+        if (e.target?.value === 'on') {
+          return toggler(MODEL);
+        }
+      }
+
+      async function toggleAnswer(e) {
+        if (e.target?.value === 'on') {
+          return toggler(ANSWER);
+        }
+      }
+    </script>
+    <title>Wiki QA Bot</title>
+  </head>
+  <body class="bg-red-300 h-full flex flex-col">
+    {% block content %}
+    {% endblock content %}
+  </body>
+</html>

@@ -128,3 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+node_modules
+project-3/server/db/database.db
