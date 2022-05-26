@@ -54,7 +54,7 @@ def get_wiki_answer(reader, question):
         a_text = reader.get_answer()
         print(f"Answer: {a_text}")
         """
-        END BLOCK 
+        END BLOCK
         """
         if not a_text:
             # model couldn't figure out the answer
