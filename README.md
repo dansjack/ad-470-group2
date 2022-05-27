@@ -93,6 +93,7 @@ Visit [localhost:8080](localhost:8080)
 #### Steps
 
 ```bash
+cd project-3/server
 gcloud config set project ad470-p3
 ```
 
