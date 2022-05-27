@@ -3,8 +3,9 @@ from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
 from helpers import get_db_connection, add_question, get_comments, add_answer
 from helpers import get_comment, get_wiki_answer
-from DocumentReader import pretrained_reader, custom_trained_reader
-
+from DocumentReader import pretrained_reader, \
+    custom_model, custom_trained_reader
+from custom_model_helpers import predict
 app = Flask(__name__)
 print('app started')
 
@@ -74,7 +75,6 @@ def submit_question():
     # add question to db
     add_question(cur, q, 'user')
 
-    # TODO: find answer from pickled model and add new comment
     q_id = cur.lastrowid
     get_comment(cur, q_id)
     single_data = cur.fetchone()
@@ -114,6 +114,15 @@ def generate_answer():
     conn.commit()
     conn.close()
     return json.dumps(tuple(db_answer))
+
+
+@app.route('/generate-prediction', methods=['POST'])
+def generate_short_prediction():
+    data = request.get_json()
+    q_text = data['question_text']
+    q_context = data['question_context']
+
+    return predict(custom_model, q_text, q_context)
 
 
 if __name__ == "__main__":

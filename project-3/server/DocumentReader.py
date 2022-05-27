@@ -1,5 +1,7 @@
 import torch
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering
+from transformers import AutoTokenizer, pipeline, \
+    AutoModelForQuestionAnswering, BertForQuestionAnswering, \
+    BertTokenizerFast
 from collections import OrderedDict
 
 """
@@ -19,7 +21,7 @@ class DocumentReader:
         self.tokenizer = AutoTokenizer.from_pretrained(self.READER_PATH)
         self.model = model or \
             AutoModelForQuestionAnswering.from_pretrained(self.READER_PATH)
-        self.max_len = self.model.config.max_position_embeddings
+        self.max_len = 512
         self.chunked = False
         self.model.eval()
 
@@ -109,8 +111,17 @@ class DocumentReader:
             self.tokenizer.convert_ids_to_tokens(input_ids))
 
 
-custom_model = "bert-large-uncased"
-pretrained_model = "deepset/bert-base-cased-squad2"
+pretrained_model_type = "deepset/bert-base-cased-squad2"
+custom_model_type = 'bert-base-uncased'
 
-pretrained_reader = DocumentReader(pretrained_model)
-custom_trained_reader = DocumentReader(custom_model)
+# Set up model provided by Abenezer for Question Answering convo
+device = torch.device('cpu')
+custom_model = model = BertForQuestionAnswering \
+    .from_pretrained(custom_model_type).to(device)
+custom_model.load_state_dict(
+    torch.load("./custom_model.pt", map_location=device)
+    )
+tokenizer = BertTokenizerFast.from_pretrained(custom_model_type)
+
+pretrained_reader = DocumentReader(pretrained_model_type)
+custom_trained_reader = DocumentReader(model=custom_model)

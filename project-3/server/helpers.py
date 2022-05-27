@@ -70,6 +70,5 @@ def get_wiki_answer(reader, question):
         # TODO: figure out what this error is
         if 'argument after ** must be a mapping, not Tensor' in error_string:
             error_string = "Hmm, Wikipedia gave me some data I didn't know how to handle. Can you try asking something else?"
-                
 
         return error_string
