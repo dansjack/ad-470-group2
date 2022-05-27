@@ -3,7 +3,7 @@
 ## Project 3
 
 Contains a one page web app with a question answering bot. This bot connects with the Wikipedia API and attempts to answer questions posed by the user.
-
+You can play with the app at https://server-ejyiaysa3q-uc.a.run.app/  
 Built with:
 
 * Flask
